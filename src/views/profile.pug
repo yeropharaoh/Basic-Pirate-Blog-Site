@@ -1,0 +1,85 @@
+doctype html
+html
+	head
+		style
+			include style.css
+		link(href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet")
+		link(type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css"  media="screen,projection")
+
+		meta(name="viewport" content="width=device-width, initial-scale=1.0")
+		link()
+		
+	body
+		//- navigation bar 
+		header
+			.navbar-fixed
+				nav
+					.nav-wrapper.white.darken-3
+						a.brand-logo(href='/') 
+							img(src='/images/logo2.png', style='width: 86%')
+						ul#nav-mobile.right.hide-on-med-and-down
+							li
+								a.btn(href='/') HOME
+								a.btn(href='/viewall') see everybody's posts 
+								a.btn(href='/logout') Click here to logout
+
+		h1 Welcome #{userInfo.username}! This is yer profile page
+		br
+		h6 Your email is #{userInfo.email}
+		h6 Your password is #{userInfo.password}
+
+		.row.center
+			button.btn.btn-large#createpost(type="submit", name="create", style="margin-left: 180px") Create a post ya landlubber!
+			br
+			br
+			
+			.postform.col.s6.offset-s3
+					h4.header.col.s12.light write your message in a bottle!
+						form(method='post' action='/newPost')
+							h4.header.col.s12.light Title: 
+							input(type='textarea', minlength='2', placeholder='e.g. Seaurchins' name='title' required)
+							br
+							br
+							h4.header.col.s12.light Message: 
+							input(type='textarea', minlength='7' name='message' required)
+							br
+
+							button.btn.btn-primary(type='submit') Submit
+		br
+		br
+ 
+		.row
+			if posts == 0 
+				h1 Grr no messages created yet!	
+			
+			else
+				row.center
+					h1 Here are the messages you posted!
+				each val in posts
+					ul(class='postbox')
+						li Title: #{val.title}
+						li Message: #{val.message}
+					div.commentBox
+					each comment in val.comments
+						each user in val.user
+							if comment.userId == user.id
+								p.comment 
+									strong 
+										i  #{user.username} commented: 
+									|	#{comment.comment}
+					form#commentform(method="POST" action="/comment")
+						textarea.commentArea.col.s6(type="text" name="comment" placeholder="say sommeth..." maxlength="30" required)
+						input(type='hidden' name='postId' value='post.id')
+						button.btn.btn-large.commentbutton(type="submit" name="submit") Comment!
+
+		//- jQuery
+		script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js')
+		script.
+			$(document).ready(function () {
+			
+			$('.postform').hide();
+
+			$("#createpost").on('click', function(){
+				$('.postform').fadeToggle("slow");
+								});
+			});					

@@ -1,0 +1,139 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background-repeat: no-repeat;
+    background-size: cover;
+	background-image: url(/images/background1.jpg);
+}
+
+h1 {
+      color: gold;
+    }
+
+h3 {
+      color: gold;
+    }
+
+h5 {
+      color: white;
+    }
+
+h6 {
+      color: white;
+    }
+
+.container1{
+	background-color: white;
+	/*z-index: 0;*/
+	opacity: 0.9;
+}
+
+.container2{
+	background-color: white;
+	margin-top: 80px;
+	opacity: 0.8;
+}
+
+#loginbtn1 {
+	display: inline-block;
+	color: gold;
+	font-weight: bold;
+}
+
+#signupbtn {
+	color: gold;
+	font-weight: bold;
+	background-color: turquoise;
+	opacity: 1
+}
+
+#createaccountbtn{
+	color: gold;
+	font-weight: bold;
+	opacity: 1
+}
+
+#loginbtn2 {
+	color: gold;
+	font-weight: bold;
+	background-color: turquoise;
+}
+
+.postform{
+	background-color: white;
+	color: gold;
+	opacity: 0.9;
+}
+
+.postbox {
+	background-image: url("images/background2.jpg");
+	display: block;
+	/*margin: 5px;*/
+	height: 137px;
+	width: 265px;
+	color: white;
+	font-size: 20px;
+	/*margin-bottom: 100px;*/
+	opacity: 0.8;
+}
+
+.commentBox{
+	background-color: white;
+}
+
+.searchbox{
+	background-color: white;
+	color: black;
+}
+
+.postcontainer {
+	background-color: brown;
+	opacity: 0.8
+}
+
+.postcontainer2 {
+	background-color: white;
+	opacity: 0.9
+}
+
+.postTitle {
+	color: gold;
+	font-size: 20px;
+}
+
+.searchTitle{
+	color: gold;
+	font-size: 24px;
+}
+
+.searchBody{
+	font-size: 30px;
+}
+
+.container{
+	color: white;
+	font-size: 20px;
+	/*background-color: white;*/
+	width: 100%;
+	opacity: 0.9
+}
+
+.commentArea{
+background-color: white;
+color: black;
+opacity: 0.6;
+}
+
+/*.commentbutton{
+	margin-bottom:20px;
+	color: gold;
+}*/
+
+/*#commentform{
+	display: block;
+	background-color: gold;
+	opacity: 0.3;
+}*/
