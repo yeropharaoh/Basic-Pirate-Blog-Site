@@ -48,8 +48,8 @@ html
 			.container1.col.s5.offset-s3
 				h4.header.col.s12.light Log in!		
 					form(action='/login', method='POST', autocomplete='off')
-						input#email(type='text', name='email', placeholder='Enter your email', style="font-wight: bold")
-						input#password(type='password', name='password', placeholder='Enter your password')
+						input#email(type='text', name='email' maxlength="18" required, placeholder='Enter your email', style="font-wight: bold")
+						input#password(type='password', name='password' minlength="8" required, placeholder='Enter your password')
 						button.btn.btn-default#loginbtn1(type="submit", name="submit") LOG IN TO YUR ACCOUNT
 								
 					button.btn.btn-default#signupbtn(type="submit", name="submit") NO ACCOUNT? REGISTER HERE!
@@ -58,9 +58,9 @@ html
 			.container2.col.s6.offset-s3
 				h4.header.col.s12.light Sign up form			
 					form(action='/signup', method='POST', autocomplete='off')
-						input#username(type='text', name='sgusername' required, placeholder='Enter your username')
+						input#username(type='text', name='sgusername' maxlength="18" required, placeholder='Enter your username')
 						input#email(type='text', name='sgemail' required, placeholder='Enter your email')
-						input#password(type='password', name='sgpassword' required, placeholder='Choose a password')
+						input#password(type='password', name='sgpassword' minlength="8" required, placeholder='Choose a password')
 						button.btn.btn-default#createaccountbtn(type="submit", name="sgsubmit1") CREATE NEW ACCOUNT
 
 						button.btn.btn-default#loginbtn2(type="submit", name="sgsubmit2", style="margin-left: 180px") ARRREADY GOT AN ACCOUNT? LOG IN	
