@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const express = require('express');
 let bodyParser = require('body-parser');
@@ -74,22 +75,26 @@ app.get('/', (request, response)=>{
 	});
 });
 
-app.post('/signup', (req,res)=>{
-  User.create({
-    username: req.body.sgusername,
-    email: req.body.sgemail,
-    password: req.body.sgpassword
-  })
-  .then((user) => {
-    console.log("User create promise returned success!")
-        req.session.user = user;
-        res.redirect('/profile');
-        console.log('do i make it here?')
+app.post('/signup', (req, res) => {
+  var password = req.body.sgpassword
+  bcrypt.hash(password, 8, (err, hash) => { //created hash for password security
+      if (err) throw err;
+      User.create({
+          username: req.body.sgusername,
+          email: req.body.sgemail,
+          password: hash
       })
-  .catch((error)=>{
-    console.error(error)
-  })
-})
+          .then((user) => {
+              console.log("User create promise returned success!")
+              req.session.user = user;
+              res.redirect('/profile');
+              console.log('do i make it here?')
+          })
+          .catch((error) => {
+              console.error(error)
+          })
+  });
+});
 
 
 app.post('/login', function (request, response) {
@@ -112,20 +117,23 @@ app.post('/login', function (request, response) {
               email: email
           }
       })
-      .then(function(user) {
+      .then((user) => {
         console.log(user);
         console.log(user.email);
+        bcrypt.compare(password, user.password, (err, data) => { //validates password
+          if (err) throw err;
           if (user !== null && password === user.password) {
               request.session.user = user;
               response.redirect('/profile');
           } else {
-              response.redirect('/?message=' + encodeURIComponent("Invalid SOMETHING ELSE email or password."));
+              response.redirect('/?message=' + encodeURIComponent("Invalid email or password matey."));
           }
       })
       .catch(function(error) {
           console.error(error)
-          response.redirect('/?message=' + encodeURIComponent("Invalid email or password."));
+          response.redirect('/?message=' + encodeURIComponent("Aarrrggh! An Error has occurred. Please check the server."));
       })
+    });    
 });
 
 //profile page where logged in user can create and see own posts

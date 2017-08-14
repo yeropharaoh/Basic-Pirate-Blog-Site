@@ -31,9 +31,9 @@ html
 
 		//- if user is logged in show 'view profile'
 		if user
-			a(href='/profile') go to profile
+			a.button.btn.btn-large(href='/profile') GO BACK TO YER PROFILE 
 			br
-			a(href='/logout') log out
+			a.button.btn.btn-large(href='/logout') LOG OUT
 		
 		else
 			
@@ -72,7 +72,8 @@ html
 				$('#loginbtn1').click(function(event) {
 					if($('#email').val().trim().length === 0 || $('#password').val().trim().length === 0) {
 						event.preventDefault();
-						$('#error-message').html("Your username or password is empty.");
+						alert('Your username or password is empty.')
+						//- $('#error-message').html("Your username or password is empty.");
 					}
 				});
 
