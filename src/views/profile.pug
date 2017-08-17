@@ -55,17 +55,17 @@ html
 			else
 				row.center
 					h1 Here are the messages you posted!
-				each val in posts
+				each post in posts
 					ul(class='postbox')
-						li Title: #{val.title}
-						li Message: #{val.message}
+						li Title: #{post.title}
+						li Message: #{post.message}
 					div.commentBox
-					each comment in val.comments
+					each comment in post.comments
 						each user in val.user
-							if comment.userId == user.id
+							if comment.userId === post.user.id
 								p.comment 
 									strong 
-										i  #{user.username} commented: 
+										i  #{post.user.username} commented: 
 									|	#{comment.comment}
 					form#commentform(method="POST" action="/comment")
 						textarea.commentArea.col.s6(type="text" name="comment" placeholder="say sommeth..." maxlength="30" required)

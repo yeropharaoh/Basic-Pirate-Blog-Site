@@ -110,8 +110,6 @@ app.post('/login', function (request, response) {
   var email = request.body.email
   var password = request.body.password
 
-  console.log(password);
-
   User.findOne({
           where: {
               email: email
@@ -120,26 +118,29 @@ app.post('/login', function (request, response) {
       .then((user) => {
         console.log(user);
         console.log(user.email);
-        bcrypt.compare(password, user.password, (err, data) => { //validates password
-          if (err) throw err;
-          if (user !== null && password === user.password) {
-              request.session.user = user;
-              response.redirect('/profile');
-          } else {
-              response.redirect('/?message=' + encodeURIComponent("Invalid email or password matey."));
-          }
-      })
-      .catch(function(error) {
-          console.error(error)
-          response.redirect('/?message=' + encodeURIComponent("Aarrrggh! An Error has occurred. Please check the server."));
-      })
-    });    
+        bcrypt.compare(password, user.password, (err, res) => { //validates password
+         // if (err) throw err;
+         console.log('Entered hashed password'+ password)
+         console.log('Database password'+user.password);
+         if (res) {
+             request.session.user = user;
+             response.redirect('/profile');
+         } else {
+             response.redirect('/?message=' + encodeURIComponent("Invalid email or password matey."));
+         }
+     })
+   })
+     .catch(function(error) {
+         console.error(error)
+         response.redirect('/?message=' + encodeURIComponent("Aarrrggh! An Error has occurred. Please check the server."));
+     })
 });
 
 //profile page where logged in user can create and see own posts
 app.get('/profile', (req,res) =>{   
   var user = req.session.user
-  Post.findAll({
+  if(user) {
+  	Post.findAll({
     where:{
       userId: user.id
     },
@@ -154,6 +155,9 @@ app.get('/profile', (req,res) =>{
       .then((posts)=>{
     res.render('profile', {userInfo: user, posts:posts})
   })
+}  else {
+  	res.redirect('/?message=' + encodeURIComponent("Please login to view your profile."));
+  }
 });
 
 //logout
@@ -170,6 +174,9 @@ app.get('/logout', (req,res)=>{
 app.post('/newPost', (req,res)=>{
   var user = req.session.user;
   console.log(user)
+  if (user === undefined) {       //only accessible for logged in users
+        res.redirect('/login?message=' + encodeURIComponent("Please log in to view all posts."));
+    } else {
   User.findOne({
     where: {
       email: user.email
@@ -188,7 +195,7 @@ app.post('/newPost', (req,res)=>{
         console.log('Scurvy! Error occured!', error);
         res.redirect('/?message=' + encodeURIComponent('Error has occurred. Please check the server.'));
     });
-});
+}});
 
 //View everybody's posts page
 app.get('/viewall', (req, res) => {
@@ -238,9 +245,13 @@ app.post('/search', (req, res) => {
   Post.findOne({
         where: { title: req.body.search }
     }).then((post) => {
-            console.log(post.id);
-            res.redirect(`/specificpost/${post.id}`)
-        });
+        if (!post) {
+         res.redirect('/viewall?message=' + encodeURIComponent('Topic not found...'));    
+        } else {
+         console.log(post.id);
+        res.redirect(`/specificpost/${post.id}`)
+    	}
+    });
 })
 
 //Comment route
