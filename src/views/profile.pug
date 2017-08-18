@@ -37,11 +37,11 @@ html
 					h4.header.col.s12.light write your message in a bottle!
 						form(method='post' action='/newPost')
 							h4.header.col.s12.light Title: 
-							input(type='textarea', minlength='2', placeholder='e.g. Seaurchins' name='title' required)
+							input(type='textarea', minlength='2' maxlength='15', placeholder='e.g. Seaurchins' name='title' required)
 							br
 							br
 							h4.header.col.s12.light Message: 
-							input(type='textarea', minlength='7' name='message' required)
+							input(type='textarea', minlength='7' max name='message' required)
 							br
 
 							button.btn.btn-primary(type='submit') Submit
@@ -61,8 +61,7 @@ html
 						li Message: #{post.message}
 					div.commentBox
 					each comment in post.comments
-						each user in val.user
-							if comment.userId === post.user.id
+						if comment.userId == post.user.id
 								p.comment 
 									strong 
 										i  #{post.user.username} commented: 
