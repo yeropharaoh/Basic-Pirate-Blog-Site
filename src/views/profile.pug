@@ -68,7 +68,7 @@ html
 									|	#{comment.comment}
 					form#commentform(method="POST" action="/comment")
 						textarea.commentArea.col.s6(type="text" name="comment" placeholder="say sommeth..." maxlength="30" required)
-						input(type='hidden' name='postId' value='post.id')
+						input(type='hidden' name='postId' value=post.id)
 						button.btn.btn-large.commentbutton(type="submit" name="submit") Comment!
 
 		//- jQuery
