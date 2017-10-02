@@ -1,3 +1,4 @@
+// Requiring neccessaries
 const bcrypt = require('bcrypt');
 const Sequelize = require('sequelize');
 const express = require('express');
@@ -67,7 +68,7 @@ Post.hasMany(Comment);
 Comment.belongsTo(User);
 Comment.belongsTo(Post);
 
-//routing
+// Homepage
 app.get('/', (request, response)=>{
 	response.render('index', {
 		message: request.query.message,
@@ -75,28 +76,29 @@ app.get('/', (request, response)=>{
 	});
 });
 
+// Register
 app.post('/signup', (req, res) => {
-  var password = req.body.sgpassword
-  bcrypt.hash(password, 8, (err, hash) => { //created hash for password security
-      if (err) throw err;
-      User.create({
-          username: req.body.sgusername,
-          email: req.body.sgemail,
-          password: hash
-      })
-          .then((user) => {
-              console.log("User create promise returned success!")
-              req.session.user = user;
-              res.redirect('/profile');
-              console.log('do i make it here?')
-          })
-          .catch((error) => {
-              console.error(error)
-          })
-  });
+var password = req.body.sgpassword
+bcrypt.hash(password, 8, (err, hash) => { //created hash for password security
+    if (err) throw err;
+    User.create({
+        username: req.body.sgusername,
+        email: req.body.sgemail,
+        password: hash
+    })
+        .then((user) => {
+            console.log("User create promise returned success!")
+            req.session.user = user;
+            res.redirect('/profile');
+            console.log('do i make it here?')
+        })
+        .catch((error) => {
+            console.error(error)
+        })
+});
 });
 
-
+// login
 app.post('/login', function (request, response) {
   if(request.body.email.length === 0) {
     response.redirect('/?message=' + encodeURIComponent("Please fill out your email address."));
@@ -137,65 +139,66 @@ app.post('/login', function (request, response) {
 });
 
 //profile page where logged in user can create and see own posts
-app.get('/profile', (req,res) =>{   
+app.get('/profile', (req, res) => {
   var user = req.session.user
-  if(user) {
-  	Post.findAll({
-    where:{
-      userId: user.id
-    },
-    include: [{
-          model: Comment, 
-          as: 'comments'
-          },{
+  if (user) {
+      Post.findAll({
+        where: {
+            userId: user.id
+        },
+        include: [{
+            model: Comment,
+            as: 'comments'
+        }, {
             model: User,
             as: 'user'
-          }]
+        }]
       })
-      .then((posts)=>{
-    res.render('profile', {userInfo: user, posts:posts})
-  })
-}  else {
-  	res.redirect('/?message=' + encodeURIComponent("Please login to view your profile."));
+          .then((posts) => {
+              res.render('profile', { userInfo: user, posts: posts })
+          })
+  } else {
+      res.redirect('/?message=' + encodeURIComponent("Please login to view your profile."));
   }
 });
 
 //logout
-app.get('/logout', (req,res)=>{
+app.get('/logout', (req, res) => {
   req.session.destroy((error) => {
-    if(error) {
-      throw error;
-    }
-    res.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
+      if (error) {
+          throw error;
+      }
+      res.redirect('/?message=' + encodeURIComponent("Successfully logged out."));
   })
 })
 
 // create new post on profile
-app.post('/newPost', (req,res)=>{
-  var user = req.session.user;
-  console.log(user)
-  if (user === undefined) {       //only accessible for logged in users
+app.post('/newPost', (req, res) => {
+    var user = req.session.user;
+    console.log(user)
+    if (user === undefined) { //only accessible for logged in users
         res.redirect('/login?message=' + encodeURIComponent("Please log in to view all posts."));
     } else {
-  User.findOne({
-    where: {
-      email: user.email
-    }
-  })
-  .then((user) => {
-    return user.createPost({
-      title: req.body.title,
-      message: req.body.message
-    }).then(()=>{
-      res.redirect('/profile');
-    })
-      
-  })
-  .catch((error) => {
-        console.log('Scurvy! Error occured!', error);
-        res.redirect('/?message=' + encodeURIComponent('Error has occurred. Please check the server.'));
-    });
-}});
+        User.findOne({
+          where: {
+              email: user.email
+          }
+        })
+        .then((user) => {
+            return user.createPost({
+                title: req.body.title,
+                message: req.body.message
+            }).then(() => {
+                res.redirect('/profile');
+            })
+
+        })
+        .catch((error) => {
+            console.log('Scurvy! Error occured!', error);
+            res.redirect('/?message=' + encodeURIComponent('Error has occurred. Please check the server.'));
+        });
+      }
+});
 
 //View everybody's posts page
 app.get('/viewall', (req, res) => {
