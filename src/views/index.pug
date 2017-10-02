@@ -62,27 +62,27 @@ html
 
 							button.btn.btn-default#loginbtn2(type="submit", name="sgsubmit2", style="margin-left: 180px") ARRREADY GOT AN ACCOUNT? LOG IN	
 
-		//- jQuery
-		script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js')
-		script.
-			$(document).ready(function () {
-				$('#loginbtn1').click(function(event) {
-					if($('#email').val().trim().length === 0 || $('#password').val().trim().length === 0) {
-						event.preventDefault();
-						alert('Your username or password is empty.')
-						//- $('#error-message').html("Your username or password is empty.");
-					}
-				});
+	//- jQuery
+	script(type='text/javascript' src='https://code.jquery.com/jquery-3.2.1.min.js')
+	script.
+		$(document).ready(function () {
+			$('#loginbtn1').click(function(event) {
+				if($('#email').val().trim().length === 0 || $('#password').val().trim().length === 0) {
+					event.preventDefault();
+					alert('Your username or password is empty.')
+					//- $('#error-message').html("Your username or password is empty.");
+				}
+			});
 
-				$('.container2').hide();
+			$('.container2').hide();
 
-				$("#signupbtn").on('click', function(){
-					$('.container1').fadeOut("fast");
-					$('.container2').fadeIn("slow");
-								});
+			$("#signupbtn").on('click', function(){
+				$('.container1').fadeOut("fast");
+				$('.container2').fadeIn("slow");
+							});
 
-				$("#loginbtn2").on('click', function(){
-					$('.container2').fadeOut("fast");
-					$('.container1').fadeIn("slow");
-								});				
-			});					
+			$("#loginbtn2").on('click', function(){
+				$('.container2').fadeOut("fast");
+				$('.container1').fadeIn("slow");
+							});				
+		});					
